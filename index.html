@@ -15,7 +15,13 @@
 
 <div class="container-fluid mt-3" id="app">
     <input type="text" class="form-control" v-model="criterioDeBusqueda"
-        placeholder="Ingresar un criterio de busqueda...">
+       placeholder="Ingresar un criterio de busqueda...">
+
+    <input type="text" class="form-control" v-model="criterioDeBusquedaDni"
+       placeholder="buscar por DNI...">
+
+    <input type="text" class="form-control" v-model="criterioDeBusquedaNombre"
+        placeholder="Buscar por nombre y apellido...">
     <br>
     <div class="card-deck m-0">
         <div class="row">
@@ -40,7 +46,9 @@
         el: '#app',
         data: {
             criterioDeBusqueda: '',
-            //Aquí, en este array es donde tienen que agregar su información
+            criterioDeBusquedaDni:'',
+            criterioDeBusquedaNombre:'',
+
             personas: [
                 {
                     nombre: "Daniel",
@@ -49,20 +57,45 @@
                     dni: "20442873"
                 },
                 {
-                    nombre: "...",
-                    apellido: "...",
-                    correo: "...",
-                    dni: "..."
+                    nombre: "Leandro",
+                    apellido: "Taddeo",
+                    correo: "leandrotaddeo03@gmail.com",
+                    dni: "34905572"
+                },
+                {
+                    nombre: "Jose",
+                    apellido: "Hernandez",
+                    correo: "josehernandez@gmail.com",
+                    dni: "548235523"
+                },
+                {
+                    nombre: "Rodrigo",
+                    apellido: "Mesa",
+                    correo: "rodrigomesa@gmail.com",
+                    dni: "144222578"
+                },
+                {
+                    nombre: "Juan",
+                    apellido: "Rodriguez",
+                    correo: "juanrodriguez@gmail.com",
+                    dni: "941265603"
                 },
             ]
 
         },
         computed: {
             personasFiltradas() {
-                return this.personas.filter((persona) => {
+                let listPersonas = [...this.personas];
+                listPersonas = this.personas.filter((persona) => {
                     let registroCompleto = `${persona.nombre} ${persona.apellido} ${persona.dni} ${persona.correo}`
                     return registroCompleto.toLowerCase().includes(this.criterioDeBusqueda.toLowerCase())
                 });
+               
+                listPersonas = listPersonas.filter(persona => persona.dni.includes(this.criterioDeBusquedaDni));
+               
+                listPersonas = listPersonas.filter(persona => `${persona.nombre} ${persona.apellido}`.toLowerCase().includes(this.criterioDeBusquedaNombre.toLowerCase()));
+                
+                return listPersonas;
             }
         },
         methods: {
